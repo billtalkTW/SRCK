@@ -8,8 +8,12 @@
 #define pin_R A0    //the port of right light sensor
 #define TRIG_PIN 13     //trig_pin for ultrasonic
 #define ECHO_PIN 12     //echo_pin for ultrasonic
-int Port[4]= {5, 8, 6, 7};	//the four ports that connect to Arduino for DRV8835
+#define SERVO_PIN 10    //pin of servo motor
 #include <Arduino.h>
+#include <Servo.h>
+
+int Port[4]= {6, 7, 5, 8};	//the four ports that connect to Arduino for DRV8835
+Servo myservo; // create servo object to control a servo
 
 //Motor Control
 void initMotor()    //set the pinModes of motor control shield
@@ -22,7 +26,7 @@ void initMotor()    //set the pinModes of motor control shield
 void setMotor(int port, int speed)  //set the port(0,1) and speed(-255~255) to the motor
 {
   int a = Port[port * 2], b = Port[port*2 + 1];
-  if(port==0)
+  if(port==1)
 	  speed *= -1;
   if(speed > 0){
     analogWrite(a, abs(speed));
@@ -75,4 +79,21 @@ int getUltrasonic()		//return the ultrasonic sensor value by cm
   digitalWrite(TRIG_PIN, LOW);
   tempda = ((unsigned int)pulseIn(ECHO_PIN, HIGH) / 58);
   return tempda;
+}
+
+//Servo Motor
+void initServo()  //initial the Servo Motor
+{
+  myservo.attach(SERVO_PIN, 500, 2400); //500: 0 degree  2400: 180 degree
+  myservo.attach(SERVO_PIN);
+  myservo.write(90); //sets the servo position according to the 90（middle）
+  delay(500);
+}
+
+void setServo(unsigned int Position_angle)
+{
+  myservo.attach(SERVO_PIN);
+  myservo.write(Position_angle);
+  delay(600);
+  myservo.detach();
 }
