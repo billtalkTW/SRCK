@@ -3,7 +3,9 @@
 int L = 372;
 int M = 421;
 int R = 422;
+//光感值
 int state = 0;
+//光感狀態
 int pwr = 90;
 int turnTimes = 0;
 int node[4] = {2, 4, 2, 2};  //2=left,4=front,8=right 
